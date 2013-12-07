@@ -1,0 +1,20 @@
+{
+  "cron" : {
+    "hellowifi" :   { 
+      "name"       : "hellowifi",
+      "description": "Permet de detecté le portable en wifi",
+      "time"       : "0 */5 * * * *",
+	  "macadr"     : "02-0b-cd-6c-e9-87",
+      "dossier"    : "Sarah",
+	  "address_ip" : "172.20.10",
+	  "disk"       : "C"
+     }
+  },
+  
+  "modules" : { 
+    "hellowifi" :   {
+      "description": "Permet de detecté le portable en wifi ",
+      "version"    : "1.0"
+	  }
+  }
+}
