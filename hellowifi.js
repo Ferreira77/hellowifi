@@ -9,7 +9,7 @@ exports.cron = function(callback, task , SARAH ){
     return;
   }
   // VARIABLE MAC ADRES
-  var mac_mobiles=new Array('90-01-3b-e8-25-44',' c0-d0-44-5d-79-35','00-21-56-05-90-c1');
+  var mac_mobiles=new Array('90-02-3b-e8-25-44',' c0-d0-44-5d-79-35','cc-3a-62-af-28-3b');
   var non_mobile=new Array('papa','maman','enfant');
   // ----------==========*********===================------------------  
   // LECTURE DU FICHIER ATTENDRE 1 MINUTE AVANT DE LANCER LA DETECTION
@@ -27,51 +27,31 @@ exports.cron = function(callback, task , SARAH ){
 		// ------ FIN
 		// RECHERCHE LA MAC ADRESS
 		var machello="";
-//console.log(" mac adre :"+mac_mobile);
 		machello = resulat.search(mac_mobile);
-//console.log(" hello :"+machello);
 		// SI TU TROUVE LA MAC ADDRESS CONTINUE
 		if (machello !== "-1" || machello !== "" ){
 			// EXTRACTION DE L'ADRESSE IP
 			var ip_mobile=resulat.substring(machello-24,machello-2);
-//console.log("mobile IP:"+ip_mobile.length);
 			var mobile_present="";
-				if ( ip_mobile.length !== '0' ){
-						// PING ADRESS MOBILE ET MES LE RESULTAT DANS LE FICHIER ping.txt
-						var ping_adres  = "ping "+ip_mobile+" > "+task.disk+":\\"+task.dossier+"\\plugins\\hellowifi\\ping.txt";
-						var child = exec(ping_adres, function (error, stdout, stderr) {
-							if (error !== null) {
-									console.log('exec ping:' +error);
-									}
-							});
-						//---- FIN 	
-						// VERIFI QUE IP 	
-						// LECTURE DU FICHIER mac_adress.txt
-					    var fs = require("fs");
-						var ping_mobile = fs.readFileSync(task.disk+':\\' +task.dossier+ '\\plugins\\hellowifi\\ping.txt', 'UTF-8', function(err, content) {
-							if (err) {
-								console.log('err read ping:'+err);
-									}
-						});
-						// -- FIN
-						var ping_ok="perte 0%";
-						mobile_present=ping_mobile.search(ping_ok);
+				if ( ip_mobile.length >= 1  ){
+				
+					var mobile_present= 3;		
 					}
-		}
+			}
 		// -- FIN
-		if (mobile_present !== ""){
+		if (mobile_present >= 1 ){
 					console.log('le mobile de ' +non_mobile[donne]+' et la. ');
 					} else{
 						console.log('le mobile de '+non_mobile[donne]+' nes pas la. ');
 						}
+		console.log('mobile_present:'+mobile_present);				
       // -- FIN BOUCLE IP 
       ++donne;	  
 	});	
 	  //  
 },60000);		
 	// DEBUT DU SCAN IP MAC ADRESS DU RESEAU
-	 
-	// SCAN LES IP DU RESEAU
+    // SCAN LES IP DU RESEAU 
 	var mac_adres  = task.disk+":\\"+task.dossier+"\\plugins\\hellowifi\\ping_range.bat";
     //console.log('cmd:'+mac_adres);
     var child = exec(mac_adres, function (error, stdout, stderr) {
@@ -86,13 +66,12 @@ exports.cron = function(callback, task , SARAH ){
 			   		console.log('exec arp:' +error);
 					}
 			}); 
-   // --------------------------------------------------------------------------------------------   
-   console.log('cron: Scan Wifi ');
-   
-   }
+
 // -------------------------------------------
 // FIN CRON
 // -------------------------------------------
+   console.log('cron: Scan Wifi ');
+   }
 
 exports.action = function(data, callback, config, SARAH){
   // config module
